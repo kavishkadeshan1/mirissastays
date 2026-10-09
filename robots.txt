@@ -1,0 +1,47 @@
+# MirissaStays Production Robots.txt
+# Optimized for Google Search Console, Bing, AI Answer Engines (AEO) & International Travel Crawlers
+
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /includes/
+Disallow: /*.sql$
+Disallow: /*.zip$
+
+# Google Crawlers
+User-agent: Googlebot
+Allow: /
+Disallow: /admin/
+Disallow: /includes/
+
+User-agent: Googlebot-Image
+Allow: /uploads/
+Allow: /social-share.jpg
+Allow: /
+
+# AEO & LLM Answer Engines (ChatGPT, Perplexity, Claude, Apple Intelligence)
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+Sitemap: https://mirissastays.com/sitemap.xml

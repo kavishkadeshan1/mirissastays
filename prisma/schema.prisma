@@ -1,0 +1,207 @@
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id            Int        @id @default(autoincrement())
+  role          String     @default("guest") @db.VarChar(20) // admin, host, guest, editor
+  fullName      String     @map("full_name") @db.VarChar(120)
+  email         String     @unique @db.VarChar(150)
+  phone         String?    @db.VarChar(30)
+  passwordHash  String     @map("password_hash") @db.VarChar(255)
+  status        String     @default("active") @db.VarChar(20) // pending, active, suspended
+  businessRegNo String?    @map("business_reg_no") @db.VarChar(100)
+  resetToken    String?    @map("reset_token") @db.VarChar(64)
+  resetExpires  DateTime?  @map("reset_expires")
+  createdAt     DateTime   @default(now()) @map("created_at")
+
+  stays         Stay[]
+  leads         Lead[]
+  auditLogs     AuditLog[]
+
+  @@map("users")
+}
+
+model Category {
+  id              Int     @id @default(autoincrement())
+  name            String  @db.VarChar(100)
+  slug            String  @unique @db.VarChar(100)
+  metaTitle       String? @map("meta_title") @db.VarChar(160)
+  metaDescription String? @map("meta_description") @db.VarChar(255)
+
+  stays           Stay[]
+
+  @@map("categories")
+}
+
+model Location {
+  id              Int     @id @default(autoincrement())
+  name            String  @db.VarChar(100)
+  slug            String  @unique @db.VarChar(100)
+  metaTitle       String? @map("meta_title") @db.VarChar(160)
+  metaDescription String? @map("meta_description") @db.VarChar(255)
+
+  stays           Stay[]
+
+  @@map("locations")
+}
+
+model Stay {
+  id              Int       @id @default(autoincrement())
+  hostId          Int       @map("host_id")
+  categoryId      Int       @map("category_id")
+  locationId      Int       @map("location_id")
+  title           String    @db.VarChar(200)
+  slug            String    @unique @db.VarChar(200)
+  metaDescription String    @map("meta_description") @db.VarChar(255)
+  shortDesc       String    @map("short_desc") @db.Text
+  fullContent     String    @map("full_content") @db.LongText
+  pricePerNight   Decimal   @map("price_per_night") @db.Decimal(10, 2)
+  currency        String?   @default("USD") @db.VarChar(10)
+  rating          Decimal?  @default(5.0) @db.Decimal(2, 1)
+  reviewCount     Int?      @default(1) @map("review_count")
+  featuredImage   String    @map("featured_image") @db.VarChar(255)
+  galleryJson     String?   @map("gallery_json") @db.LongText
+  amenitiesJson   String?   @map("amenities_json") @db.LongText
+  address         String    @db.VarChar(255)
+  latitude        Decimal?  @db.Decimal(10, 8)
+  longitude       Decimal?  @db.Decimal(11, 8)
+  mapEmbed        String?   @map("map_embed") @db.Text
+  affiliateUrl    String?   @map("affiliate_url") @db.VarChar(500)
+  whatsappNumber  String    @map("whatsapp_number") @db.VarChar(30)
+  allowBooking    Boolean   @default(true) @map("allow_booking")
+  status          String    @default("published") @db.VarChar(20) // draft, published, archived
+  isFeatured      Boolean   @default(false) @map("is_featured")
+  createdAt       DateTime  @default(now()) @map("created_at")
+
+  host            User      @relation(fields: [hostId], references: [id], onDelete: Cascade)
+  category        Category  @relation(fields: [categoryId], references: [id])
+  location        Location  @relation(fields: [locationId], references: [id])
+  leads           Lead[]
+  reviews         Review[]
+
+  @@index([hostId])
+  @@index([categoryId])
+  @@index([locationId])
+  @@index([status])
+  @@index([isFeatured])
+  @@map("stays")
+}
+
+model Lead {
+  id              Int       @id @default(autoincrement())
+  stayId          Int       @map("stay_id")
+  guestId         Int?      @map("guest_id")
+  guestName       String    @map("guest_name") @db.VarChar(120)
+  guestEmail      String    @map("guest_email") @db.VarChar(150)
+  guestPhone      String    @map("guest_phone") @db.VarChar(30)
+  checkinDate     DateTime  @map("checkin_date") @db.Date
+  checkoutDate    DateTime  @map("checkout_date") @db.Date
+  guestsCount     Int?      @default(2) @map("guests_count")
+  specialRequests String?   @map("special_requests") @db.Text
+  status          String    @default("new") @db.VarChar(20) // new, contacted, booked, cancelled
+  createdAt       DateTime  @default(now()) @map("created_at")
+
+  stay            Stay      @relation(fields: [stayId], references: [id], onDelete: Cascade)
+  guest           User?     @relation(fields: [guestId], references: [id], onDelete: SetNull)
+
+  @@index([stayId])
+  @@index([guestId])
+  @@map("leads")
+}
+
+model Guide {
+  id              Int            @id @default(autoincrement())
+  title           String         @db.VarChar(255)
+  metaTitle       String?        @map("meta_title") @db.VarChar(255)
+  slug            String         @unique @db.VarChar(255)
+  metaDescription String         @map("meta_description") @db.VarChar(255)
+  primaryKeyword  String?        @map("primary_keyword") @db.VarChar(255)
+  tags            String?        @db.VarChar(500)
+  authorName      String?        @default("Ruwan Jayasuriya") @map("author_name") @db.VarChar(120)
+  authorRole      String?        @default("Local Travel Specialist") @map("author_role") @db.VarChar(150)
+  authorImage     String?        @map("author_image") @db.VarChar(255)
+  authorBio       String?        @map("author_bio") @db.Text
+  featuredImage   String         @map("featured_image") @db.VarChar(255)
+  content         String         @db.LongText
+  views           Int            @default(0)
+  isFeatured      Boolean        @default(false) @map("is_featured")
+  status          String         @default("published") @db.VarChar(20) // draft, published
+  createdAt       DateTime       @default(now()) @map("created_at")
+
+  comments        GuideComment[]
+
+  @@map("guides")
+}
+
+model GuideComment {
+  id          Int      @id @default(autoincrement())
+  guideId     Int      @map("guide_id")
+  authorName  String   @map("author_name") @db.VarChar(100)
+  authorEmail String   @map("author_email") @db.VarChar(150)
+  comment     String   @db.Text
+  status      String   @default("approved") @db.VarChar(20) // approved, pending, spam
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  guide       Guide    @relation(fields: [guideId], references: [id], onDelete: Cascade)
+
+  @@index([guideId])
+  @@index([status])
+  @@map("guide_comments")
+}
+
+model ContactMessage {
+  id        Int      @id @default(autoincrement())
+  name      String   @db.VarChar(150)
+  email     String   @db.VarChar(150)
+  subject   String   @db.VarChar(255)
+  message   String   @db.Text
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("contacts")
+}
+
+model Setting {
+  keyName   String   @id @map("key_name") @db.VarChar(100)
+  valueText String   @map("value_text") @db.LongText
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+
+  @@map("settings")
+}
+
+model Review {
+  id         Int      @id @default(autoincrement())
+  stayId     Int      @map("stay_id")
+  guestName  String   @map("guest_name") @db.VarChar(120)
+  guestEmail String?  @map("guest_email") @db.VarChar(150)
+  rating     Decimal  @default(5.0) @db.Decimal(2, 1)
+  comment    String   @db.Text
+  isVerified Boolean  @default(true) @map("is_verified")
+  status     String   @default("approved") @db.VarChar(20) // approved, pending
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  stay       Stay     @relation(fields: [stayId], references: [id], onDelete: Cascade)
+
+  @@index([stayId])
+  @@map("reviews")
+}
+
+model AuditLog {
+  id        Int      @id @default(autoincrement())
+  userId    Int?     @map("user_id")
+  action    String   @db.VarChar(100)
+  entity    String   @db.VarChar(100)
+  entityId  Int?     @map("entity_id")
+  details   String?  @db.Text
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+  @@map("audit_logs")
+}

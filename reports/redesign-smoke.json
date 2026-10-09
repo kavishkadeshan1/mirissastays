@@ -1,0 +1,283 @@
+{
+  "checkedAt": "2026-10-09T19:26:50.083Z",
+  "publishedStays": 9,
+  "results": [
+    {
+      "route": "/",
+      "status": 200
+    },
+    {
+      "route": "/stays",
+      "status": 200
+    },
+    {
+      "route": "/destinations",
+      "status": 200
+    },
+    {
+      "route": "/guides",
+      "status": 200
+    },
+    {
+      "route": "/about",
+      "status": 200
+    },
+    {
+      "route": "/contact",
+      "status": 200
+    },
+    {
+      "route": "/faq",
+      "status": 200
+    },
+    {
+      "route": "/privacy",
+      "status": 200
+    },
+    {
+      "route": "/terms",
+      "status": 200
+    },
+    {
+      "route": "/cookies",
+      "status": 200
+    },
+    {
+      "route": "/login",
+      "status": 200
+    },
+    {
+      "route": "/register",
+      "status": 200
+    },
+    {
+      "route": "/forgot-password",
+      "status": 200
+    },
+    {
+      "route": "/reset-password",
+      "status": 200
+    },
+    {
+      "route": "/robots.txt",
+      "status": 200
+    },
+    {
+      "route": "/sitemap.xml",
+      "status": 200
+    },
+    {
+      "route": "/stay/the-nine-mirissa",
+      "status": 200
+    },
+    {
+      "property": "the-nine-mirissa",
+      "photos": 5,
+      "optimized": 200
+    },
+    {
+      "route": "/stay/asaya-sands-mirissa",
+      "status": 200
+    },
+    {
+      "property": "asaya-sands-mirissa",
+      "photos": 5,
+      "optimized": 200
+    },
+    {
+      "route": "/stay/paradise-beach-club",
+      "status": 200
+    },
+    {
+      "property": "paradise-beach-club",
+      "photos": 4,
+      "optimized": 200
+    },
+    {
+      "route": "/stay/mandara-resort-mirissa",
+      "status": 200
+    },
+    {
+      "property": "mandara-resort-mirissa",
+      "photos": 5,
+      "optimized": 200
+    },
+    {
+      "route": "/stay/pearldrop-waves-mirissa",
+      "status": 200
+    },
+    {
+      "property": "pearldrop-waves-mirissa",
+      "photos": 9,
+      "optimized": 200
+    },
+    {
+      "route": "/stay/aura-by-epic-collection-mirissa",
+      "status": 200
+    },
+    {
+      "property": "aura-by-epic-collection-mirissa",
+      "photos": 8,
+      "optimized": 200
+    },
+    {
+      "route": "/stay/mimoza-mirissa",
+      "status": 200
+    },
+    {
+      "property": "mimoza-mirissa",
+      "photos": 8,
+      "optimized": 200
+    },
+    {
+      "route": "/stay/coastline-mirissa-boutique-and-spa",
+      "status": 200
+    },
+    {
+      "property": "coastline-mirissa-boutique-and-spa",
+      "photos": 8,
+      "optimized": 200
+    },
+    {
+      "route": "/stay/the-spice-house-mirissa",
+      "status": 200
+    },
+    {
+      "property": "the-spice-house-mirissa",
+      "photos": 9,
+      "optimized": 200
+    },
+    {
+      "route": "/guides/coconut-tree-hill-mirissa",
+      "status": 200
+    },
+    {
+      "route": "/guides/secret-beaches-south-sri-lanka",
+      "status": 200
+    },
+    {
+      "route": "/guides/best-time-whale-watching-mirissa",
+      "status": 200
+    },
+    {
+      "route": "/guides/mirissa-backpacker-budget-guide",
+      "status": 200
+    },
+    {
+      "route": "/guides/10-best-mirissa-hotels",
+      "status": 200
+    },
+    {
+      "route": "/location/kamburugamuwa",
+      "status": 200
+    },
+    {
+      "route": "/location/madiha",
+      "status": 200
+    },
+    {
+      "route": "/location/midigama",
+      "status": 200
+    },
+    {
+      "route": "/location/mirissa",
+      "status": 200
+    },
+    {
+      "route": "/location/thalaramba",
+      "status": 200
+    },
+    {
+      "route": "/location/weligama",
+      "status": 200
+    },
+    {
+      "route": "/category/guesthouse",
+      "status": 200
+    },
+    {
+      "route": "/category/hostel",
+      "status": 200
+    },
+    {
+      "route": "/category/hotel",
+      "status": 200
+    },
+    {
+      "route": "/category/villa",
+      "status": 200
+    },
+    {
+      "route": "/stays?q=no-such-property-qa-check",
+      "status": 200
+    },
+    {
+      "route": "/stays?sort=price_asc&currency=LKR",
+      "status": 200
+    },
+    {
+      "route": "/stays?sort=one&sort=two",
+      "status": 200
+    },
+    {
+      "route": "/stay/sunrise-villa-mirissa",
+      "status": 404
+    },
+    {
+      "route": "/stay/cozy-guest-house",
+      "status": 404
+    },
+    {
+      "route": "/stay/weligama-surf-hotel",
+      "status": 404
+    },
+    {
+      "route": "/stay/thalaramba-ocean-villa",
+      "status": 404
+    },
+    {
+      "route": "/stay/kamburugamuwa-coastal-retreat",
+      "status": 404
+    },
+    {
+      "route": "/stay/sandy-coconut-guest",
+      "status": 404
+    },
+    {
+      "route": "/stay/mirissa-hills",
+      "status": 404
+    },
+    {
+      "route": "/about.php",
+      "status": 308
+    },
+    {
+      "route": "/stay.php?slug=the-nine-mirissa",
+      "status": 308
+    },
+    {
+      "route": "/places",
+      "status": 308
+    },
+    {
+      "route": "/host",
+      "status": 307
+    },
+    {
+      "route": "/admin",
+      "status": 307
+    },
+    {
+      "route": "/api/inquiries",
+      "invalidInput": 400
+    },
+    {
+      "route": "/api/contact",
+      "invalidInput": 400
+    },
+    {
+      "route": "/api/auth/reset-password",
+      "invalidInput": 400
+    }
+  ]
+}
