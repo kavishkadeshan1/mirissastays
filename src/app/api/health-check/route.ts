@@ -4,42 +4,44 @@ import prisma from "@/lib/prisma";
 export const dynamic = "force-dynamic";
 
 export async function GET() {
+  const diagnostics: Record<string, any> = {};
+
   try {
-    const dbInfo = await prisma.$queryRaw`SELECT DATABASE() as current_database, USER() as current_user`;
-    let tables: any = [];
-    try {
-      tables = await prisma.$queryRaw`SHOW TABLES`;
-    } catch {}
-
-    let staysCount = 0;
-    try {
-      staysCount = await prisma.stay.count();
-    } catch (e: any) {
-      return NextResponse.json({
-        success: false,
-        status: "connected_but_tables_missing",
-        message: "Connected to MySQL, but tables are missing. Please import mirissastays_final.sql in phpMyAdmin.",
-        dbInfo,
-        tables,
-        error: e.message,
-      });
-    }
-
-    return NextResponse.json({
-      success: true,
-      status: "connected_and_tables_ready",
-      dbInfo,
-      tablesCount: Array.isArray(tables) ? tables.length : 0,
-      staysCount,
-    });
-  } catch (error: any) {
-    return NextResponse.json(
-      {
-        success: false,
-        status: "connection_failed",
-        error: error.message || String(error),
-      },
-      { status: 500 }
-    );
+    const raw = await prisma.$queryRaw`SELECT 1 as is_connected`;
+    diagnostics.rawConnection = raw;
+  } catch (e: any) {
+    diagnostics.rawConnectionError = e.message;
   }
+
+  try {
+    diagnostics.categoriesCount = await prisma.category.count();
+  } catch (e: any) {
+    diagnostics.categoriesError = e.message;
+  }
+
+  try {
+    diagnostics.locationsCount = await prisma.location.count();
+  } catch (e: any) {
+    diagnostics.locationsError = e.message;
+  }
+
+  try {
+    diagnostics.guidesCount = await prisma.guide.count();
+  } catch (e: any) {
+    diagnostics.guidesError = e.message;
+  }
+
+  try {
+    const stays = await prisma.stay.findMany({
+      where: { status: "published" },
+      take: 2,
+      include: { category: true, location: true },
+    });
+    diagnostics.staysCount = stays.length;
+    diagnostics.sampleStay = stays[0]?.title || null;
+  } catch (e: any) {
+    diagnostics.staysError = e.message;
+  }
+
+  return NextResponse.json(diagnostics);
 }

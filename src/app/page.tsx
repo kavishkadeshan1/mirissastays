@@ -52,21 +52,30 @@ export default async function HomePage({
     if (typeof value === "string" && value) legacy.set(key, value);
   }
   if (legacy.size) redirect("/stays?" + legacy.toString());
-  const [categories, locations, stays, guides] = await Promise.all([
-    prisma.category.findMany({ orderBy: { name: "asc" } }),
-    prisma.location.findMany({ orderBy: { name: "asc" } }),
-    prisma.stay.findMany({
-      where: { status: "published" },
-      take: 6,
-      orderBy: [{ isFeatured: "desc" }, { createdAt: "desc" }],
-      include: { category: true, location: true },
-    }),
-    prisma.guide.findMany({
-      where: { status: "published" },
-      take: 3,
-      orderBy: [{ isFeatured: "desc" }, { createdAt: "desc" }],
-    }),
-  ]);
+  let categories: any[] = [];
+  let locations: any[] = [];
+  let stays: any[] = [];
+  let guides: any[] = [];
+
+  try {
+    [categories, locations, stays, guides] = await Promise.all([
+      prisma.category.findMany({ orderBy: { name: "asc" } }),
+      prisma.location.findMany({ orderBy: { name: "asc" } }),
+      prisma.stay.findMany({
+        where: { status: "published" },
+        take: 6,
+        orderBy: [{ isFeatured: "desc" }, { createdAt: "desc" }],
+        include: { category: true, location: true },
+      }),
+      prisma.guide.findMany({
+        where: { status: "published" },
+        take: 3,
+        orderBy: [{ isFeatured: "desc" }, { createdAt: "desc" }],
+      }),
+    ]);
+  } catch (error) {
+    console.error("HomePage database query error:", error);
+  }
 
   const faqSchema = generateFaqSchema(defaultFaqs);
   const staysItemList = generateItemListSchema(
