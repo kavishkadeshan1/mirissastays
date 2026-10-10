@@ -56,6 +56,7 @@ export default async function HomePage({
   let locations: any[] = [];
   let stays: any[] = [];
   let guides: any[] = [];
+  let databaseUnavailable = false;
 
   try {
     [categories, locations, stays, guides] = await Promise.all([
@@ -75,6 +76,7 @@ export default async function HomePage({
     ]);
   } catch (error) {
     console.error("HomePage database query error:", error);
+    databaseUnavailable = true;
   }
 
   const faqSchema = generateFaqSchema(defaultFaqs);
@@ -123,7 +125,12 @@ export default async function HomePage({
             Explore all stays <ArrowUpRight size={17} />
           </Link>
         </div>
-        {stays.length ? (
+        {databaseUnavailable ? (
+          <div className="empty-state">
+            <h2>Places are temporarily unavailable.</h2>
+            <p>We’re reconnecting the coast collection. Please try again shortly.</p>
+          </div>
+        ) : stays.length ? (
           <div className="stay-grid">
             {stays.map((s) => (
               <StayCard key={s.id} stay={presentStay(s)} />
